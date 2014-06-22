@@ -23,7 +23,9 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "turbulentMappedPatchFieldBase.H"
+#ifndef turbulentMappedPatchFieldBase_H
+#define turbulentMappedPatchFieldBase_H
+
 #include "mappedPatchBase.H"
 #include "interpolationCell.H"
 #include "fvCFD.H"
@@ -433,7 +435,7 @@ void turbulentMappedPatchFieldBase<Type>::write(Ostream& os) const
         << token::END_STATEMENT << nl;
 }
 
-
+#endif
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam

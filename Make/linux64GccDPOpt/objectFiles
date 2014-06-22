@@ -1,4 +1,3 @@
 OBJECTS = \
 $(OBJECTS_DIR)/turbulentMappedPatchFieldBase.o\
-$(OBJECTS_DIR)/turbulentMappedFieldFvPatchField.o\
-$(OBJECTS_DIR)/turbulentMappedFieldFvPatchFields.o
+$(OBJECTS_DIR)/turbulentMappedFieldFvPatchField.o

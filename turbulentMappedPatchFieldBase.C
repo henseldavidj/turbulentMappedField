@@ -23,9 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef turbulentMappedPatchFieldBase_H
-#define turbulentMappedPatchFieldBase_H
-
+#include "turbulentMappedPatchFieldBase.H"
 #include "mappedPatchBase.H"
 #include "interpolationCell.H"
 #include "fvCFD.H"
@@ -297,11 +295,11 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
 
     if (setAverage_)
     {
-
+/*
         Type averagePsi =
             gSum(patchField_.patch().magSf()*newValues)
            /gSum(patchField_.patch().magSf());
-/*
+*/
             //Info<< "averagePsi: "<< averagePsi << endl;
         scalarField valZ(newValues.component(2));
         //Info<< "valZ: "<< valZ << endl;
@@ -401,9 +399,9 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
 				Info<< "stdev test (is 0.4) "<< stdev2 << endl;
 
 
-*/
+
 //Not needed for my scaling
-		
+/*		
         if (mag(averagePsi)/mag(average_) > 0.5)
         {
             newValues *= mag(average_)/mag(averagePsi);
@@ -412,7 +410,7 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
         {
             newValues += (average_ - averagePsi);
         }
-        
+ */      
     }
 
 
@@ -435,7 +433,7 @@ void turbulentMappedPatchFieldBase<Type>::write(Ostream& os) const
         << token::END_STATEMENT << nl;
 }
 
-#endif
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam

@@ -1,6 +1,6 @@
 turbulentMappedPatchFieldBase.C
 turbulentMappedFieldFvPatchField.C
-turbulentMappedFieldFvPatchFields.C
+
 
 LIB = $(FOAM_USER_LIBBIN)/libmyBCs
 
