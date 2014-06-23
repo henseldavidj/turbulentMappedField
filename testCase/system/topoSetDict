@@ -1,0 +1,186 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+actions
+(
+    {
+        name    inletFaces;
+        type    faceSet;
+        action  new;
+        source  patchToFace;
+        sourceInfo
+        {
+            name "inlet";
+        }
+    }
+
+    {
+        name    jetCells;
+        type    cellSet;
+        action  new;
+        source  cylinderToCell;
+        sourceInfo
+        {
+            p1      (0 0 0);
+	    	p2      (0 0 1);
+            radius  0.0018;
+        }
+    }
+
+    {
+        name    jetFaces;
+        type    faceSet;
+        action  new;
+        source  cellToFace;
+        sourceInfo
+        {
+            set     jetCells;
+            option  all;
+        }
+    }
+
+ 	{
+        name    bluffCells;
+        type    cellSet;
+        action  new;
+        source  cylinderAnnulusToCell;
+        sourceInfo
+        {
+            p1      (0 0 0);
+            p2      (0 0 1);
+            outerRadius  0.025; 
+			innerRadius  0.0018;
+
+        }
+ 	}
+
+ 	{
+        name    bluffFaces;
+        type    faceSet;
+        action  new;
+        source  cellToFace;
+        sourceInfo
+        {
+            set     bluffCells;
+            option  all;
+        }
+    }
+
+
+ 	{
+        name    coFlowPatchFaces;
+        type    faceSet;
+        action  new;
+        source  faceToFace;
+        sourceInfo
+        {
+            set inletFaces;  		// Start with entire inlet face
+        }
+    }
+
+ 	{
+        name    coFlowPatchFaces;
+        type    faceSet;
+        action  delete;
+        source  faceToFace;
+        sourceInfo
+        {
+			set bluffFaces;  		// Remove Bluff faces
+        }
+    }
+
+	{
+        name    coFlowPatchFaces;
+        type    faceSet;
+        action  delete;
+        source  faceToFace;
+        sourceInfo
+        {
+			set jetFaces; 			// Remove Jet faces
+        }
+    }
+
+ 	{
+        name    bluffPatchFaces;
+        type    faceSet;
+        action  new;
+        source  faceToFace;
+        sourceInfo
+        {
+            set inletFaces; 		// Start with entire inlet face
+        }
+    }
+
+ 	{
+        name    bluffPatchFaces;
+        type    faceSet;
+        action  delete;
+        source  faceToFace;
+        sourceInfo
+        {
+			set coFlowPatchFaces;  // Remove Bluff faces
+        }
+    }
+
+ 	{
+        name    bluffPatchFaces;
+        type    faceSet;
+        action  delete;
+        source  faceToFace;
+        sourceInfo
+        {
+			set jetFaces;  			// Remove Jet Faces
+        }
+    }
+
+ 	{
+        name    jetPatchFaces;
+        type    faceSet;
+        action  new;
+        source  faceToFace;
+        sourceInfo
+        {
+            set inletFaces;  		// Start with entire inlet face
+        }
+    }
+
+ 	{
+        name    jetPatchFaces;
+        type    faceSet;
+        action  delete;
+        source  faceToFace;
+        sourceInfo
+        {
+			set coFlowPatchFaces; 	// Remove coflow faces
+        }
+    }
+
+ 	{
+        name    jetPatchFaces;
+        type    faceSet;
+        action  delete;
+        source  faceToFace;
+        sourceInfo
+        {
+			set bluffFaces;  		// Remove bluff faces
+        }
+    }
+
+);
+
+// ************************************************************************* //
+
+

@@ -1,4 +1,0 @@
-SOURCE = \
-turbulentMappedPatchFieldBase.C\
-turbulentMappedFieldFvPatchField.C\
-turbulentMappedFieldFvPatchFields.C

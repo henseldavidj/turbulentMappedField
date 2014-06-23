@@ -1,3 +1,0 @@
-include turbulentMappedPatchFieldBase.dep
-include turbulentMappedFieldFvPatchField.dep
-include turbulentMappedFieldFvPatchFields.dep

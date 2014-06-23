@@ -1,4 +1,0 @@
-DEPENDENCIES = \
-turbulentMappedPatchFieldBase.dep\
-turbulentMappedFieldFvPatchField.dep\
-turbulentMappedFieldFvPatchFields.dep

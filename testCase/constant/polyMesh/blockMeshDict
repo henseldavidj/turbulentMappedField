@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.001;
+
+a 20;       // Number of elements in x direction
+b 20;       // Number of elements in y direction
+c 20;       // Number of elements in z direction
+xi -10.5;      // Minimum x coordinate   
+xf  10.5;      // Maximum x coordinate
+yi -10.5;      // Minimum y coordinate
+yf  10.5;      // Maximum y coordinate
+zi 0;      // Minimum z coordinate
+zf  20;      // Maximum z coordinate
+
+
+vertices
+(
+    ($xi $yi $zi) //0
+    ($xf $yi $zi) //1
+    ($xf $yf $zi) //2
+    ($xi $yf $zi) //3
+    ($xi $yi $zf) //4
+    ($xf $yi $zf) //5
+    ($xf $yf $zf) //6
+    ($xi $yf $zf) //7
+);
+
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) ($a $b $c) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    inlet
+    {
+        type 		turbulentMappedField;
+        offset          (0 0 0.001);  // mid-field
+        sampleRegion    region0;
+        sampleMode      nearestCell;
+        samplePatch     none;
+        faces
+        (
+        	( 0  1  2  3)  //Bottom Face
+        );
+    }
+    
+    outlet
+    {
+        type patch;
+        faces
+        (
+        	( 4  5  6  7)  //Top Face
+        );
+    }
+
+    sides
+    {
+        type patch;
+        faces
+        (
+        	( 0  1  5  4)  //Front Face
+        	( 1  2  6  5)  //Right Face
+        	( 3  0  4  7)  //Left Face
+        	( 2  3  7  6)  //Back Face
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
