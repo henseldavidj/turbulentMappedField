@@ -1,3 +1,4 @@
 DEPENDENCIES = \
 turbulentMappedPatchFieldBase.dep\
-turbulentMappedFieldFvPatchField.dep
+turbulentMappedFieldFvPatchField.dep\
+turbulentMappedFieldFvPatchFields.dep

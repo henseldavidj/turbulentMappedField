@@ -1,3 +1,4 @@
 SOURCE = \
 turbulentMappedPatchFieldBase.C\
-turbulentMappedFieldFvPatchField.C
+turbulentMappedFieldFvPatchField.C\
+turbulentMappedFieldFvPatchFields.C

@@ -53,7 +53,8 @@
 # 1 "files"
 turbulentMappedPatchFieldBase.C
 turbulentMappedFieldFvPatchField.C
+turbulentMappedFieldFvPatchFields.C
 
 
-LIB = $(FOAM_USER_LIBBIN)/libmyBCs
+LIB = $(FOAM_LIBBIN)/libturbulentMappedField
 

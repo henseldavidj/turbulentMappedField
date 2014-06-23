@@ -99,7 +99,7 @@ class turbulentMappedFieldFvPatchField
 public:
 
     //- Runtime type information
-    TypeName("mappedField");
+    TypeName("turbulentMappedField");
 
 
     // Constructors
@@ -212,7 +212,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-#   include "turbulentMappedFieldFvPatchField.C"
+//#   include "turbulentMappedFieldFvPatchField.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

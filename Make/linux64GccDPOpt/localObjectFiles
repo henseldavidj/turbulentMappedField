@@ -1,3 +1,4 @@
 LOCAL_OBJECTS = \
 turbulentMappedPatchFieldBase.o\
-turbulentMappedFieldFvPatchField.o
+turbulentMappedFieldFvPatchField.o\
+turbulentMappedFieldFvPatchFields.o

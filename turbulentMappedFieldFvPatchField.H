@@ -99,8 +99,7 @@ class turbulentMappedFieldFvPatchField
 public:
 
     //- Runtime type information
-    TypeName("mappedField");
-
+    TypeName("turbulentMappedField");
 
     // Constructors
 
