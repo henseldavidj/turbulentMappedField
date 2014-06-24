@@ -153,7 +153,7 @@ void turbulentMappedFieldFvPatchField<Type>::updateCoeffs()
         return;
     }
 
-    this->operator==(this->mappedField());
+	this->operator==(this->turbulentMappedPatchFieldBase<Type>::mappedField());
 
     if (debug)
     {
