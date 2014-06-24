@@ -346,8 +346,6 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
 		scalar stdev = sqrt(var);
 		//Info<< "stdev "<< stdev << endl;
 
-
-
 		// Avoid divide by zero error
 		scalar sdScaleFactor = 1;
 		if (stdev != 0){
@@ -367,7 +365,6 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
 		scalar sdscaledMean =
 		                    gSum(patchField_.patch().magSf()*normZ)
 		                   /gSum(patchField_.patch().magSf());
-
 
 		scalar meanShift = sdscaledMean - meanVelocityWanted;
 
@@ -396,7 +393,7 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
 				//Info<< "var: "<< var << endl;
 
 				scalar stdev2 = sqrt(var2);
-				Info<< "stdev test (is 0.4) "<< stdev2 << endl;
+				Info<< "stdev given: " << stdevGiven << " = stdev of test: " << stdev2 << endl;
 
 
 /*
