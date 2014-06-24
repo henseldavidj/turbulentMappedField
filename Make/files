@@ -1,4 +1,4 @@
 turbulentMappedFieldFvPatchFields.C
 
-LIB = $(FOAM_LIBBIN)/libturbulentMappedField
+LIB = $(FOAM_USER_LIBBIN)/libturbulentMappedField
 

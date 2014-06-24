@@ -28,6 +28,10 @@ boundaryField
         interpolationScheme cell;
         setAverage          true;
         average             (0 0 2);
+	offset          ( 0 0 0.001 );
+        sampleRegion    region0;
+        sampleMode      nearestCell;
+        samplePatch     none;
     }
     outlet
     {
