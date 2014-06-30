@@ -1,5 +1,1 @@
-
-turbulentMapped2FieldFvPatchFields.C
-
 LIB = $(FOAM_USER_LIBBIN)/libturbulentMapped2Field
-
