@@ -321,7 +321,9 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
         scalar meanVelocityWanted = 61;
 
         //TODO: Parameterize this
-        scalar stdevGiven = 0.13518 * meanVelocityWanted;
+        //Area weighted fluctuation, from Sydney data. As percentage of mean velocity 61. (7.72307) based on
+        // third-order polynomial fit to data series, and calculated by reimann sum like 'integration'
+        scalar stdevGiven = 0.12664 * meanVelocityWanted;
 
         // this scalar field might not be necessary, but didn't like the average_ parameter.
         scalarField avgGiven(newValues.size(), meanVelocityWanted);
