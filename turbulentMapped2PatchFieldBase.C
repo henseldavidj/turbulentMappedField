@@ -301,7 +301,7 @@ tmp<Field<Type> > turbulentMapped2PatchFieldBase<Type>::mappedField() const
            /gSum(patchField_.patch().magSf());
 */
             //Info<< "averagePsi: "<< averagePsi << endl;
-        scalarField valZ(newValues.component(2));
+        scalarField valZ(newValues.component(0)); // Changed streamwise component to X
         //Info<< "valZ: "<< valZ << endl;
         //scalar avgZ =
         //            gSum(patchField_.patch().magSf()*newValues.component(2))
@@ -373,18 +373,18 @@ tmp<Field<Type> > turbulentMapped2PatchFieldBase<Type>::mappedField() const
 		//Info<< "scaled mean shifted values"<< sdScaled << endl;
 
 		//newValues.component(2) = shiftedValues;
-		newValues.replace(0,0);
+		newValues.replace(0,sdScaled);
 		newValues.replace(1,0);
-		newValues.replace(2,sdScaled);
+		newValues.replace(2,0);
 		//Info<< "scaled newValues "<< newValues << endl;
 
 
 		// unit test:
-		scalar meanValueTest = gSum(patchField_.patch().magSf()*newValues.component(2))
+		scalar meanValueTest = gSum(patchField_.patch().magSf()*newValues.component(0))
 				                   /gSum(patchField_.patch().magSf());
 		Info<< "test meanValue: "<< meanValueTest << endl;
 
-		scalarField diffFromMean2 = meanValueTest - newValues.component(2);
+		scalarField diffFromMean2 = meanValueTest - newValues.component(0);
 
 		scalarField diffsqr2 = sqr(diffFromMean2);
 				//Info<< "diffsqr: "<< diffsqr << endl;
