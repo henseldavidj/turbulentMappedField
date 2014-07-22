@@ -301,7 +301,9 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
            /gSum(patchField_.patch().magSf());
 */
             //Info<< "averagePsi: "<< averagePsi << endl;
-        scalarField valZ(newValues.component(2));
+
+	// Changed to X component (0), as typical streamwise coordinate
+        scalarField valZ(newValues.component(0));
         //Info<< "valZ: "<< valZ << endl;
         //scalar avgZ =
         //            gSum(patchField_.patch().magSf()*newValues.component(2))
@@ -322,8 +324,8 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
 
         //TODO: Parameterize this
         //Area weighted fluctuation, from Sydney data. As percentage of mean velocity 61. (7.72307) based on
-        // third-order polynomial fit to data series, and calculated by reimann sum like 'integration'
-        scalar stdevGiven = 0.12664 * meanVelocityWanted;
+        // third-order polynomial fit to data series, and calculated by reimann sum like 'integration' 12.66% 
+        scalar stdevGiven = 0.1266 * meanVelocityWanted;
 
         // this scalar field might not be necessary, but didn't like the average_ parameter.
         scalarField avgGiven(newValues.size(), meanVelocityWanted);
@@ -375,9 +377,9 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
 		//Info<< "scaled mean shifted values"<< sdScaled << endl;
 
 		//newValues.component(2) = shiftedValues;
-		newValues.replace(0,0);
+		newValues.replace(0,sdScaled);  //changed scaled component to X component
 		newValues.replace(1,0);
-		newValues.replace(2,sdScaled);
+		newValues.replace(2,0);
 		//Info<< "scaled newValues "<< newValues << endl;
 
 
