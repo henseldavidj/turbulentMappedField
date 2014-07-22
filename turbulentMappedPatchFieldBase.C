@@ -384,11 +384,11 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
 
 
 		// unit test:
-		scalar meanValueTest = gSum(patchField_.patch().magSf()*newValues.component(2))
+		scalar meanValueTest = gSum(patchField_.patch().magSf()*newValues.component(0))
 				                   /gSum(patchField_.patch().magSf());
 		Info<< "test meanValue: "<< meanValueTest << endl;
 
-		scalarField diffFromMean2 = meanValueTest - newValues.component(2);
+		scalarField diffFromMean2 = meanValueTest - newValues.component(0);
 
 		scalarField diffsqr2 = sqr(diffFromMean2);
 				//Info<< "diffsqr: "<< diffsqr << endl;
