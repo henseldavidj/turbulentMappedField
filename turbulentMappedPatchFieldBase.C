@@ -325,6 +325,10 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
         scalarField normZ = valZ / avgGiven;
         //Info<< "normZ "<< normZ <<endl;
 
+	// NOTE: As derived on 7/24/14, it is not necessary to scale a normalized field, rather
+	// any field will do.  You just need the standard deviation of the sampled field to create
+	// a scaling factor.
+	
 	// Calculate the average of the normalized field
         scalar avgZNorm =
                     gSum(patchField_.patch().magSf()*normZ)
