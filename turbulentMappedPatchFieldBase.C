@@ -301,29 +301,20 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
            /gSum(patchField_.patch().magSf());
 */
             //Info<< "averagePsi: "<< averagePsi << endl;
-
+	
+	// Take streamwise component of sampled field "newValues"
 	// Changed to X component (0), as typical streamwise coordinate
         scalarField valZ(newValues.component(0));
         //Info<< "valZ: "<< valZ << endl;
-        //scalar avgZ =
-        //            gSum(patchField_.patch().magSf()*newValues.component(2))
-        //           /gSum(patchField_.patch().magSf());
-            //int zlen = newValues.size();
-            //scalar slen = zlen;
-            //Info<< "zlen: "<< zlen << endl;
-            //Info<< "slen: "<< slen << endl;
-
-
-        //const Type avg = average_;
-        //Type ave = this->average_;
-
-        //Info<< ave << endl;
-
+   
         //TODO: parameterize this:
+        // Desired mean velocity.  This should be provided at the boundary condition dictionary level
         scalar meanVelocityWanted = 61;
 
         //TODO: Parameterize this
-        //Area weighted fluctuation, from Sydney data. As percentage of mean velocity 61. (7.72307) based on
+        // Desired standard deviation.  This should be provided at the boundary condition dictionary level
+        
+        // Area weighted fluctuation, from Sydney data. As percentage of mean velocity 61. (7.72307) based on
         // third-order polynomial fit to data series, and calculated by reimann sum like 'integration' 12.66% 
         scalar stdevGiven = 0.1266 * meanVelocityWanted;
 
@@ -338,66 +329,68 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
                    /gSum(patchField_.patch().magSf());
         //Info<< "averagePsiNorm "<< avgZNorm <<endl;
 
-		scalarField diffFromMean = avgZNorm - normZ;
-		//Info<< "diffFromMean: "<< diffFromMean << endl;
+	scalarField diffFromMean = avgZNorm - normZ;
+	//Info<< "diffFromMean: "<< diffFromMean << endl;
 
-		scalarField diffsqr = sqr(diffFromMean);
-		//Info<< "diffsqr: "<< diffsqr << endl;
+	scalarField diffsqr = sqr(diffFromMean);
+	//Info<< "diffsqr: "<< diffsqr << endl;
 
-		scalar var = gSum(patchField_.patch().magSf()*diffsqr)/gSum(patchField_.patch().magSf());
-		//Info<< "var: "<< var << endl;
+	scalar var = gSum(patchField_.patch().magSf()*diffsqr)/gSum(patchField_.patch().magSf());
+	//Info<< "var: "<< var << endl;
 
-		scalar stdev = sqrt(var);
-		//Info<< "stdev "<< stdev << endl;
+	scalar stdev = sqrt(var);
+	//Info<< "stdev "<< stdev << endl;
 
-		// Avoid divide by zero error
-		scalar sdScaleFactor = 1;
-		if (stdev != 0){
-		sdScaleFactor = stdevGiven / stdev;
-		}
-		//Info << "sdScaleFactor " << sdScaleFactor << endl;
+	// Avoid divide by zero error
+	scalar sdScaleFactor = 1;
+	if (stdev != 0){
+	sdScaleFactor = stdevGiven / stdev;
+	}
+	//Info << "sdScaleFactor " << sdScaleFactor << endl;
 
-		//scalarField sdScaleFactorfield(newValues.size(), (stdevGiven/stdev));
-		//Info<< "sdScaleFactorField "<< sdScaleFactorfield << endl;
+	// Scale normalized field by multipling by the standard deviation scaling field
+	// This provides a field with the desired standard deviation
+	scalarField sdScaled = normZ * sdScaleFactor;
+	normZ *= sdScaleFactor;
+	//Info<< "sdScaled "<< normZ << endl;
 
-		scalarField sdScaled = normZ * sdScaleFactor;
-		normZ *= sdScaleFactor;
-		//Info<< "sdScaled "<< normZ << endl;
+	// Calculate mean value of newly scaled field
+	scalar sdscaledMean =
+	                    gSum(patchField_.patch().magSf()*normZ)
+	                   /gSum(patchField_.patch().magSf());
 
+	// Calculate the difference between the desired mean and the newly scaled field mean value
+	scalar meanShift = sdscaledMean - meanVelocityWanted;
 
-		//calculate mean shift
-		scalar sdscaledMean =
-		                    gSum(patchField_.patch().magSf()*normZ)
-		                   /gSum(patchField_.patch().magSf());
+	// Shift the newly scaled values by the difference calculated previously ("meanShift")
+	sdScaled -= meanShift;
+	//Info<< "scaled mean shifted values"<< sdScaled << endl;
 
-		scalar meanShift = sdscaledMean - meanVelocityWanted;
-
-		sdScaled -= meanShift;
-
-		//Info<< "scaled mean shifted values"<< sdScaled << endl;
-
-		//newValues.component(2) = shiftedValues;
-		newValues.replace(0,sdScaled);  //changed scaled component to X component
-		newValues.replace(1,0);
-		newValues.replace(2,0);
-		//Info<< "scaled newValues "<< newValues << endl;
+	// Reassign this field back to boundary by replacing components of newValues
+	// Cross-stream components are assumed zero, based on initial conditions
+	
+	//newValues.component(2) = shiftedValues;
+	newValues.replace(0,sdScaled);  //changed scaled component to X component
+	newValues.replace(1,0);
+	newValues.replace(2,0);
+	//Info<< "scaled newValues "<< newValues << endl;
 
 
 		// unit test:
 		scalar meanValueTest = gSum(patchField_.patch().magSf()*newValues.component(0))
 				                   /gSum(patchField_.patch().magSf());
 		Info<< "test meanValue: "<< meanValueTest << endl;
-
+	
 		scalarField diffFromMean2 = meanValueTest - newValues.component(0);
-
+	
 		scalarField diffsqr2 = sqr(diffFromMean2);
 				//Info<< "diffsqr: "<< diffsqr << endl;
-
-				scalar var2 = gSum(patchField_.patch().magSf()*diffsqr2)/gSum(patchField_.patch().magSf());
-				//Info<< "var: "<< var << endl;
-
-				scalar stdev2 = sqrt(var2);
-				Info<< "stdev given: " << stdevGiven << " = stdev of test: " << stdev2 << endl;
+	
+		scalar var2 = gSum(patchField_.patch().magSf()*diffsqr2)/gSum(patchField_.patch().magSf());
+		//Info<< "var: "<< var << endl;
+	
+		scalar stdev2 = sqrt(var2);
+		Info<< "stdev given: " << stdevGiven << " = stdev of test: " << stdev2 << endl;
 
 
 /*
