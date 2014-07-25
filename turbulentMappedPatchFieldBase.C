@@ -321,23 +321,23 @@ tmp<Field<Type> > turbulentMappedPatchFieldBase<Type>::mappedField() const
         // this scalar field might not be necessary, but didn't like the average_ parameter.
         scalarField avgGiven(newValues.size(), meanVelocityWanted);
 
+	// Calculate the normalized field by dividing the sampled field by the field's average
         scalarField normZ = valZ / avgGiven;
         //Info<< "normZ "<< normZ <<endl;
 
+	// Calculate the average of the normalized field
         scalar avgZNorm =
                     gSum(patchField_.patch().magSf()*normZ)
                    /gSum(patchField_.patch().magSf());
-        //Info<< "averagePsiNorm "<< avgZNorm <<endl;
+        //Info<< "avgZNorm "<< avgZNorm <<endl;
 
+	// Calculate the standard deviation of the normalized field
 	scalarField diffFromMean = avgZNorm - normZ;
 	//Info<< "diffFromMean: "<< diffFromMean << endl;
-
 	scalarField diffsqr = sqr(diffFromMean);
 	//Info<< "diffsqr: "<< diffsqr << endl;
-
 	scalar var = gSum(patchField_.patch().magSf()*diffsqr)/gSum(patchField_.patch().magSf());
 	//Info<< "var: "<< var << endl;
-
 	scalar stdev = sqrt(var);
 	//Info<< "stdev "<< stdev << endl;
 
